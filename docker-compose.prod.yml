@@ -1,0 +1,83 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    container_name: ${PROJECT_SLUG}_nginx
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - internal
+    volumes:
+      - ./backend/public:/app/backend/public
+      - ./conf/nginx/:/etc/nginx:ro
+      - ./logs/nginx/:/var/log/nginx
+      - /etc/localtime:/etc/localtime:ro
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    depends_on:
+      - backend
+    command: "/bin/sh -c 'nginx -g \"daemon off;\" & while sleep 6h; do nginx -s reload; done'"
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'while sleep 12h; do certbot renew; done;'"
+
+
+  backend:
+    container_name: ${PROJECT_SLUG}_backend
+    build:
+      context: .
+      dockerfile: ./docker/backend/${ENVIRONMENT}/Dockerfile
+      args:
+        - NODE_ENV=${ENVIRONMENT}
+    restart: unless-stopped
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: postgres
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PORT: ${DATABASE_PORT}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      NODE_ENV: ${ENVIRONMENT}
+      PUBLIC_URL: ${PUBLIC_URL}
+    volumes:
+      - ./backend/config:/app/config
+      - ./backend/src:/app/src
+      - ./backend/package.json:/app/package.json
+      - ./.env:/app/.env
+      - ./backend/public/uploads:/app/public/uploads
+      - /app/node_modules
+    networks:
+      - internal
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14.0-alpine
+    container_name: ${PROJECT_SLUG}_postgres
+    platform: linux/amd64
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+    networks:
+      - internal
+
+volumes:
+  postgres-data:
+
+networks:
+  internal:
+    name: ${PROJECT_SLUG}_internal
+    driver: bridge
