@@ -1,0 +1,41 @@
+{
+  "kind": "collectionType",
+  "collectionName": "skills",
+  "info": {
+    "singularName": "skill",
+    "pluralName": "skills",
+    "displayName": "skills",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "imageurl": {
+      "type": "string"
+    },
+    "cooldown": {
+      "type": "integer"
+    },
+    "manacost": {
+      "type": "integer"
+    },
+    "mechanic": {
+      "displayName": "mechanic",
+      "type": "component",
+      "repeatable": true,
+      "component": "mechanic.mechanic"
+    },
+    "remainingCooldown": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

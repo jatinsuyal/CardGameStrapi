@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_healing_healings",
+  "info": {
+    "displayName": "healing",
+    "icon": "earth"
+  },
+  "options": {},
+  "attributes": {
+    "healingamount": {
+      "type": "integer"
+    }
+  }
+}

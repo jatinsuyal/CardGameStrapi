@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_mechanic_mechanics",
+  "info": {
+    "displayName": "mechanic",
+    "icon": "cog",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "targeting": {
+      "type": "enumeration",
+      "enum": [
+        "single",
+        "aoe"
+      ]
+    },
+    "amountofturns": {
+      "type": "integer"
+    },
+    "damaging": {
+      "displayName": "damaging",
+      "type": "component",
+      "repeatable": false,
+      "component": "damaging.damaging"
+    },
+    "healing": {
+      "displayName": "healing",
+      "type": "component",
+      "repeatable": false,
+      "component": "healing.healing"
+    }
+  }
+}

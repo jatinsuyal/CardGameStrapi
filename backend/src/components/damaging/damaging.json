@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_damaging_damagings",
+  "info": {
+    "displayName": "damaging",
+    "icon": "chartBubble"
+  },
+  "options": {},
+  "attributes": {
+    "damageaamount": {
+      "type": "integer"
+    },
+    "ignorevulnerability": {
+      "type": "boolean"
+    }
+  }
+}
