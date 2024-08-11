@@ -10,8 +10,6 @@
 //   'strapi::favicon',
 //   'strapi::public',
 // ];
-import { Strapi } from '@strapi/strapi';
-
 export default [
   'strapi::logger',
   'strapi::errors',
@@ -19,8 +17,9 @@ export default [
   {
     name: 'strapi::cors',
     config: {
-      origin: ['https://cardgamestrapi-production.up.railway.app', 'https://cardgamestrapi-production.up.railway.app'], // Replace with your Unity app URLs
-      headers: '*',
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      headers: ['Content-Type', 'Authorization'],
     },
   },
   'strapi::poweredBy',
