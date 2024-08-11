@@ -20,7 +20,7 @@ ENV SHARP_IGNORE_GLOBAL_LIBVIPS=1
 # Copy individual files/folders
 COPY ./backend/package.json /app/
 COPY ./backend/yarn.lock /app/
-COPY ./.env /app/
+#COPY ./.env /app/
 COPY ./backend/src /app/src  
 
 # Install dependencies in /app
